@@ -1,12 +1,12 @@
 {% from 'bootstrap/nav.html' import render_nav_item %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% block head %}
-        <title>{% block title %}{% endblock %} - Albumy</title>
+        <title>{% block title %}{% endblock %} - YouGuoQi</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         {% block styles %}
             <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Albumy">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="YouGuoQi">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
                     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,7 @@
                     {{ render_nav_item('main.index', 'Home') }}
                     {{ render_nav_item('main.explore', 'Explore') }}
                     <form class="form-inline my-2 my-lg-0" action="{{ url_for('main.search') }}">
-                        <input type="text" name="q" class="form-control mr-sm-1" placeholder="Photo, tag or user"
+                        <input type="text" name="q" class="form-control mr-sm-1" placeholder="Dish, tag or user"
                                required>
                         <button class="btn btn-light my-2 my-sm-0" type="submit">
                             <span class="oi oi-magnifying-glass"></span>
@@ -42,13 +42,10 @@
                 </div>
                 <div class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated %}
-                    <a class="nav-item nav-link" href="{{ url_for('main.show_notifications', filter='unread') }}">
+                    <a class="nav-item nav-link" href="{{ url_for('main.show_notifications') }}">
                         <span class="oi oi-bell"></span>
-                        <span id="notification-badge"
-                              class="{% if notification_count == 0 %}hide{% endif %} badge badge-danger badge-notification"
-                              data-href="{{ url_for('ajax.notifications_count') }}">{{ notification_count }}</span>
                     </a>
-                    <a class="nav-item nav-link" href="{{ url_for('main.upload') }}" title="Upload">
+                    <a class="nav-item nav-link" href="{{ url_for('shop.upload', shop_id=current_user.shops[0].id) }}" title="Upload">
                         <span class="oi oi-cloud-upload"></span>&nbsp;&nbsp;
                     </a>
                     <div class="dropdown nav-item">
@@ -67,11 +64,6 @@
                             <a class="dropdown-item" href="{{ url_for('user.edit_profile') }}">
                                 <span class="oi oi-cog"></span> Settings
                             </a>
-                            {% if current_user.can('MODERATE') %}
-                                <a class="dropdown-item" href="{{ url_for('admin.index') }}">
-                                    <span class="oi oi-dashboard"></span> Dashboard
-                                </a>
-                            {% endif %}
                             <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
                                 <span class="oi oi-power-standby"></span> Logout
                             </a>
@@ -99,14 +91,12 @@
         {% block footer %}
             <footer>
                 <p class="float-left">
-                    <small>&copy; 2018
-                        <a href="http://greyli.com" title="Written by Grey Li">Grey Li</a> -
-                        <a href="https://github.com/greyli/albumy" title="Fork me on GitHub">GitHub</a> -
-                        <a href="http://helloflask.com" title="A HelloFlask project">HelloFlask</a>
+                    <small>&copy; 2022
+                        <a href="https://github.com/chichengfengxue/ygq-master" title="Fork me on GitHub">GitHub</a>
                     </small>
                 </p>
                 <p class="float-right">
-                    <small>Capture and share every wonderful moment.</small>
+                    <small>有锅气</small>
                 </p>
             </footer>
         {% endblock %}

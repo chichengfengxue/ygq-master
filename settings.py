@@ -32,7 +32,7 @@ class BaseConfig:
     MAIL_DEFAULT_SENDER = ('YGQ Admin', MAIL_USERNAME)
 
     # 每页记录数
-    YGQ_PHOTO_PER_PAGE = 12
+    YGQ_DISH_PER_PAGE = 12
     YGQ_COMMENT_PER_PAGE = 15
     YGQ_NOTIFICATION_PER_PAGE = 20
     YGQ_USER_PER_PAGE = 20
@@ -44,11 +44,11 @@ class BaseConfig:
 
     # 图片上传
     YGQ_UPLOAD_PATH = os.path.join(basedir, 'uploads')
-    YGQ_PHOTO_SIZE = {'small': 400,
+    YGQ_DISH_SIZE = {'small': 400,
                          'medium': 800}
-    YGQ_PHOTO_SUFFIX = {
-        YGQ_PHOTO_SIZE['small']: '_s',
-        YGQ_PHOTO_SIZE['medium']: '_m',
+    YGQ_DISH_SUFFIX = {
+        YGQ_DISH_SIZE['small']: '_s',
+        YGQ_DISH_SIZE['medium']: '_m',
     }
     MAX_CONTENT_LENGTH = 3 * 1024 * 1024  # 上传图片最大值
 
