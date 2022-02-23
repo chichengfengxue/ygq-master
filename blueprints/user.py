@@ -60,6 +60,7 @@ def buy(username, dish_id):
         )
         db.session.add(order)
         rider.income += fare
+        dish.sales += 1
         db.session.commit()
         flash('Order successfully.', 'success')
 

@@ -140,7 +140,7 @@ class Rider(db.Model):
     orders = db.relationship('Order', back_populates='rider')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='rider')
-    income = db.Column(db.Integer)
+    income = db.Column(db.Integer, default=0)
     active = db.Column(db.Boolean, default=False)
 
     def change_active(self):

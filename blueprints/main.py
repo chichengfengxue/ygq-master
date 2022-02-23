@@ -14,18 +14,13 @@ main_bp = Blueprint('main', __name__)
 
 
 @main_bp.route('/')
-@login_required
 def index():
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
-    pagination = Order.query \
-        .join(Follow, Follow.followed_id == Dish.shop_id) \
-        .filter(Follow.follower_id == current_user.id) \
-        .order_by(Dish.timestamp.desc()) \
-        .paginate(page, per_page)
-    photos = pagination.items
+    pagination = Dish.query.order_by(Dish.sales.desc()).paginate(page, per_page)
+    dishes = pagination.items
     tags = Tag.query.join(Tag.dishes).group_by(Tag.id).order_by(func.count(Dish.id).desc()).limit(10)
-    return render_template('main/index.html', pagination=pagination, photos=photos, tags=tags, Collect=Collect)
+    return render_template('main/index.html', pagination=pagination, dishes=dishes, tags=tags)
 
 
 @main_bp.route('/explore')

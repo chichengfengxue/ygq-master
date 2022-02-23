@@ -63,7 +63,13 @@ def fake_shop(count=20):
 def fake_rider(count=50):
     for i in range(count):
         user = User.query.get(random.randint(1, User.query.count()))
-        user.rider.change_active()
+        rider = Rider(
+            location_x=user.location_x,
+            location_y=user.location_y,
+            user=user,
+            active=True
+        )
+        db.session.add(rider)
     db.session.commit()
 
 
@@ -81,13 +87,12 @@ def fake_dish(count=100):
 
         dish = Dish(
             description=fake.text(),
-            files=file,
             price=random.randint(10, 100),
             timestamp=fake.date_time_this_year(),
             shop=Shop.query.get(random.randint(1, Shop.query.count())),
             sales=random.randint(0, 1000)
         )
-
+        file.dish = dish
         # tags
         for j in range(random.randint(1, 5)):
             tag = Tag.query.get(random.randint(1, Tag.query.count()))
@@ -123,7 +128,9 @@ def fake_order(count=200):
         start_time = fake.date_time_this_year()
         fare = random.randint(1, 50)
         number = random.randint(1, 10)
-        rider = Rider.query.get(random.randint(1, User.query.count()))
+        rider = Rider.query.get(random.randint(1, Rider.query.count()))
+        rider.income += fare
+        dish.sales += 1
         order = Order(
             consumer=User.query.get(random.randint(1, User.query.count())),
             rider=rider,
@@ -135,5 +142,4 @@ def fake_order(count=200):
             is_finish=True
         )
         db.session.add(order)
-        rider.income += fare
     db.session.commit()

@@ -67,13 +67,7 @@ def register_shell_context(app):
 
 
 def register_template_context(app):
-    @app.context_processor
-    def make_template_context():
-        if current_user.is_authenticated:
-            notification_count = Notification.query.with_parent(current_user).filter_by(is_read=False).count()
-        else:
-            notification_count = None
-        return dict(notification_count=notification_count)
+    pass
 
 
 def register_errorhandlers(app):
@@ -127,11 +121,14 @@ def register_commands(app):
     @app.cli.command()
     @click.option('--user', default=10, help='Quantity of users, default is 10.')
     @click.option('--follow', default=30, help='Quantity of follows, default is 30.')
-    @click.option('--photo', default=30, help='Quantity of photos, default is 30.')
     @click.option('--tag', default=20, help='Quantity of tags, default is 20.')
     @click.option('--collect', default=50, help='Quantity of collects, default is 50.')
     @click.option('--comment', default=100, help='Quantity of comments, default is 100.')
-    def forge(user, follow, photo, tag, collect, comment, dish, rider, order):
+    @click.option('--dish', default=100, help='Quantity of dishes, default is 100.')
+    @click.option('--rider', default=50, help='Quantity of riders, default is 50.')
+    @click.option('--order', default=100, help='Quantity of orders, default is 200.')
+    @click.option('--shop', default=20, help='Quantity of shops, default is 20.')
+    def forge(user, follow, tag, collect, comment, dish, rider, order, shop):
         """Generate fake data."""
 
         from .fakes import fake_shop, fake_comment, fake_follow, fake_rider, fake_tag, fake_user, \
@@ -140,21 +137,22 @@ def register_commands(app):
         db.drop_all()
         db.create_all()
 
-        click.echo('Initializing the roles and permissions...')
         click.echo('Generating %d users...' % user)
         fake_user(user)
+        click.echo('Generating %d shops...' % shop)
+        fake_shop(shop)
         click.echo('Generating %d follows...' % follow)
         fake_follow(follow)
         click.echo('Generating %d tags...' % tag)
         fake_tag(tag)
-        click.echo('Generating %d dishes...' % photo)
+        click.echo('Generating %d dishes...' % dish)
         fake_dish(dish)
         click.echo('Generating %d collects...' % collect)
         fake_collect(collect)
         click.echo('Generating %d comments...' % comment)
         fake_comment(comment)
-        click.echo('Generating %d riders...' % comment)
+        click.echo('Generating %d riders...' % rider)
         fake_rider(rider)
-        click.echo('Generating %d orders...' % comment)
+        click.echo('Generating %d orders...' % order)
         fake_order(order)
         click.echo('Done.')
