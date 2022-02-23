@@ -22,7 +22,7 @@ user_bp = Blueprint('user', __name__)
 def index(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
+    per_page = current_app.config['YGQ_DISH_PER_PAGE']
     pagination = Order.query.with_parent(user).order_by(Order.timestamp.desc()).paginate(page, per_page)
     orders = pagination.items
     return render_template('user/index.html', user=user, pagination=pagination, orders=orders)
@@ -84,7 +84,7 @@ def show_order(order_id):
 def show_collections(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
+    per_page = current_app.config['YGQ_DISH_PER_PAGE']
     pagination = Collect.query.with_parent(user).order_by(Collect.timestamp.desc()).paginate(page, per_page)
     collects = pagination.items
     return render_template('user/collections.html', user=user, pagination=pagination, collects=collects)
@@ -121,7 +121,7 @@ def unfollow(username):
 def show_followers(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_USER_PER_PAGE']
+    per_page = current_app.config['YGQ_USER_PER_PAGE']
     pagination = user.followers.paginate(page, per_page)
     follows = pagination.items
     return render_template('user/followers.html', user=user, pagination=pagination, follows=follows)

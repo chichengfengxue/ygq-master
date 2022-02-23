@@ -12,7 +12,7 @@ rider_bp = Blueprint('rider', __name__)
 def index(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
+    per_page = current_app.config['YGQ_DISH_PER_PAGE']
     pagination = Order.query.with_parent(user.rider).order_by(Order.timestamp.desc()).paginate(page, per_page)
     orders = pagination.items
     return render_template('rider/index.html', rider=user.rider, pagination=pagination, orders=orders)

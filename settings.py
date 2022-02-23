@@ -22,33 +22,33 @@ class Operations:
 class BaseConfig:
 
     # email
-    ALBUMY_ADMIN_EMAIL = os.getenv('ALBUMY_ADMIN', 'admin@helloflask.com')
-    ALBUMY_MAIL_SUBJECT_PREFIX = '[Albumy]'
+    YGQ_ADMIN_EMAIL = os.getenv('YGQ_ADMIN', 'admin@helloflask.com')
+    YGQ_MAIL_SUBJECT_PREFIX = '[YGQ]'
     MAIL_SERVER = os.getenv('MAIL_SERVER')
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = ('Albumy Admin', MAIL_USERNAME)
+    MAIL_DEFAULT_SENDER = ('YGQ Admin', MAIL_USERNAME)
 
     # 每页记录数
-    ALBUMY_PHOTO_PER_PAGE = 12
-    ALBUMY_COMMENT_PER_PAGE = 15
-    ALBUMY_NOTIFICATION_PER_PAGE = 20
-    ALBUMY_USER_PER_PAGE = 20
-    ALBUMY_MANAGE_PHOTO_PER_PAGE = 20
-    ALBUMY_MANAGE_USER_PER_PAGE = 30
-    ALBUMY_MANAGE_TAG_PER_PAGE = 50
-    ALBUMY_MANAGE_COMMENT_PER_PAGE = 30
-    ALBUMY_SEARCH_RESULT_PER_PAGE = 20
+    YGQ_PHOTO_PER_PAGE = 12
+    YGQ_COMMENT_PER_PAGE = 15
+    YGQ_NOTIFICATION_PER_PAGE = 20
+    YGQ_USER_PER_PAGE = 20
+    YGQ_MANAGE_PHOTO_PER_PAGE = 20
+    YGQ_MANAGE_USER_PER_PAGE = 30
+    YGQ_MANAGE_TAG_PER_PAGE = 50
+    YGQ_MANAGE_COMMENT_PER_PAGE = 30
+    YGQ_SEARCH_RESULT_PER_PAGE = 20
 
     # 图片上传
-    ALBUMY_UPLOAD_PATH = os.path.join(basedir, 'uploads')
-    ALBUMY_PHOTO_SIZE = {'small': 400,
+    YGQ_UPLOAD_PATH = os.path.join(basedir, 'uploads')
+    YGQ_PHOTO_SIZE = {'small': 400,
                          'medium': 800}
-    ALBUMY_PHOTO_SUFFIX = {
-        ALBUMY_PHOTO_SIZE['small']: '_s',
-        ALBUMY_PHOTO_SIZE['medium']: '_m',
+    YGQ_PHOTO_SUFFIX = {
+        YGQ_PHOTO_SIZE['small']: '_s',
+        YGQ_PHOTO_SIZE['medium']: '_m',
     }
     MAX_CONTENT_LENGTH = 3 * 1024 * 1024  # 上传图片最大值
 
@@ -64,7 +64,7 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # 头像上传
-    AVATARS_SAVE_PATH = os.path.join(ALBUMY_UPLOAD_PATH, 'avatars')
+    AVATARS_SAVE_PATH = os.path.join(YGQ_UPLOAD_PATH, 'avatars')
     AVATARS_SIZE_TUPLE = (30, 100, 200)  # 小、中、大头像图片大小元组
 
     WHOOSHEE_MIN_STRING_LEN = 1  # 搜索关键字的最小字符数

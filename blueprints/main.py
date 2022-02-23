@@ -16,7 +16,7 @@ main_bp = Blueprint('main', __name__)
 @main_bp.route('/')
 def index():
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
+    per_page = current_app.config['YGQ_DISH_PER_PAGE']
     pagination = Dish.query.order_by(Dish.sales.desc()).paginate(page, per_page)
     dishes = pagination.items
     tags = Tag.query.join(Tag.dishes).group_by(Tag.id).order_by(func.count(Dish.id).desc()).limit(10)
@@ -38,7 +38,7 @@ def search():
 
     category = request.args.get('category', 'photo')
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_SEARCH_RESULT_PER_PAGE']
+    per_page = current_app.config['YGQ_SEARCH_RESULT_PER_PAGE']
     if category == 'user':
         pagination = User.query.whooshee_search(q).paginate(page, per_page)
     elif category == 'tag':
@@ -53,7 +53,7 @@ def search():
 @login_required
 def show_notifications():
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_NOTIFICATION_PER_PAGE']
+    per_page = current_app.config['YGQ_NOTIFICATION_PER_PAGE']
     notifications = Notification.query.with_parent(current_user)
     pagination = notifications.order_by(Notification.timestamp.desc()).paginate(page, per_page)
     notifications = pagination.items
@@ -62,7 +62,7 @@ def show_notifications():
 
 @main_bp.route('/uploads/<path:filename>')
 def get_image(filename):
-    return send_from_directory(current_app.config['ALBUMY_UPLOAD_PATH'], filename)
+    return send_from_directory(current_app.config['YGQ_UPLOAD_PATH'], filename)
 
 
 @main_bp.route('/avatars/<path:filename>')
@@ -74,7 +74,7 @@ def get_avatar(filename):
 def show_dish(dish_id):
     dish = Dish.query.get_or_404(dish_id)
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_COMMENT_PER_PAGE']
+    per_page = current_app.config['YGQ_COMMENT_PER_PAGE']
     pagination = Comment.query.with_parent(dish).order_by(Comment.timestamp.asc()).paginate(page, per_page)
     comments = pagination.items
 
@@ -205,7 +205,7 @@ def delete_dish(dish_id):
 def show_tag(tag_id, order):
     tag = Tag.query.get_or_404(tag_id)
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
+    per_page = current_app.config['YGQ_DISH_PER_PAGE']
     order_rule = 'time'
     pagination = Dish.query.with_parent(tag).order_by(Dish.timestamp.desc()).paginate(page, per_page)
     photos = pagination.items

@@ -249,6 +249,6 @@ def delete_photos(**kwargs):
     """图片删除事件监听函数"""
     target = kwargs['target']
     for filename in target.filenames.filename, target.filename_s:
-        path = os.path.join(current_app.config['ALBUMY_UPLOAD_PATH'], filename)
+        path = os.path.join(current_app.config['YGQ_UPLOAD_PATH'], filename)
         if os.path.exists(path):  # not every filename map a unique file
             os.remove(path)

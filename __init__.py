@@ -110,7 +110,6 @@ def register_commands(app):
 
     @app.cli.command()
     def init():
-        """Initialize Albumy."""
         click.echo('Initializing the database...')
         db.create_all()
 

@@ -17,7 +17,7 @@ shop_bp = Blueprint('shop', __name__)
 def index(shop_id):
     shop = Shop.query.get_or_404(shop_id)
     page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
+    per_page = current_app.config['YGQ_DISH_PER_PAGE']
     pagination = Dish.query.with_parent(shop.user).order_by(Dish.timestamp.desc()).paginate(page, per_page)
     dishes = pagination.items
     return render_template('shop/index.html', shop=shop, pagination=pagination, dishes=dishes)
@@ -74,7 +74,7 @@ def upload(shop_id):
     if request.method == 'POST' and 'file' in request.files:
         f = request.files.get('file')
         filename = rename_file(f.filename)
-        f.save(os.path.join(current_app.config['ALBUMY_UPLOAD_PATH'], filename))
+        f.save(os.path.join(current_app.config['YGQ_UPLOAD_PATH'], filename))
         file = File(
             filename=filename,
             user=shop.user

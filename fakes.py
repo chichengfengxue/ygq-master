@@ -74,7 +74,7 @@ def fake_rider(count=50):
 
 
 def fake_dish(count=100):
-    upload_path = current_app.config['ALBUMY_UPLOAD_PATH']
+    upload_path = current_app.config['YGQ_UPLOAD_PATH']
     for i in range(count):
         filename = 'random_%d.jpg' % i
         r = lambda: random.randint(128, 255)
