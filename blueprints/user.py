@@ -23,18 +23,16 @@ def index(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['YGQ_DISH_PER_PAGE']
-    pagination = Order.query.with_parent(user).order_by(Order.timestamp.desc()).paginate(page, per_page)
+    pagination = Order.query.with_parent(user).order_by(Order.start_time.desc()).paginate(page, per_page)
     orders = pagination.items
     return render_template('user/index.html', user=user, pagination=pagination, orders=orders)
 
 
-@user_bp.route('/<username>/buy/<int:dish_id>', methods=['GET', 'POST'])
+@user_bp.route('/buy/<int:dish_id>', methods=['GET', 'POST'])
 @login_required
 @confirm_required
-def buy(username, dish_id):
-    user = User.query.filter_by(username=username).first_or_404()
-    if current_user != user:
-        abort(403)
+def buy(dish_id):
+    user = current_user
     dish = Dish.query.get_or_404(dish_id)
     form = EditOrder()
     if form.validate_on_submit():
@@ -77,6 +75,8 @@ def buy(username, dish_id):
 @login_required
 def show_order(order_id):
     order = Order.query.get_or_404(order_id)
+    # if current_user == order.shop.user or current_user == order.rider.user or current_user == order.consumer:
+    #     abort(403)
     return render_template('user/show_order.html', order=order)
 
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/pagination.html' import render_pagination %}
-{% from 'macros.html' import photo_card, user_card with context %}
+{% from 'macros.html' import dish_card, user_card with context %}
 
 {% block title %}Search: {{ q }}{% endblock %}
 
@@ -11,8 +11,8 @@
     <div class="row">
         <div class="col-md-3">
             <div class="nav nav-pills flex-column" role="tablist" aria-orientation="vertical">
-                <a class="nav-item nav-link {% if category == 'photo' %}active{% endif %}"
-                   href="{{ url_for('.search', q=q, category='photo') }}">Photo</a>
+                <a class="nav-item nav-link {% if category == 'dish' %}active{% endif %}"
+                   href="{{ url_for('.search', q=q, category='dish') }}">Dish</a>
                 <a class="nav-item nav-link {% if category == 'user' %}active{% endif %}"
                    href="{{ url_for('.search', q=q, category='user') }}">User</a>
                 <a class="nav-item nav-link {% if category == 'tag' %}active{% endif %}"
@@ -23,13 +23,13 @@
             {% if results %}
                 <h5>{{ results|length }} results</h5>
                 {% for item in results %}
-                    {% if category == 'photo' %}
-                        {{ photo_card(item) }}
+                    {% if category == 'dish' %}
+                        {{ dish_card(item) }}
                     {% elif category == 'user' %}
                         {{ user_card(item) }}
                     {% else %}
                         <a class="badge badge-light" href="{{ url_for('.show_tag', tag_id=item.id) }}">
-                            {{ item.name }} {{ item.photos|length }}
+                            {{ item.name }} {{ item.dishes|length }}
                         </a>
                     {% endif %}
                 {% endfor %}

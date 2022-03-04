@@ -93,6 +93,10 @@ class User(db.Model, UserMixin):
             return False
         return self.following.filter_by(followed_id=user.id).first() is not None
 
+    def is_followed_by(self, user):
+        """判断用户是否被某个用户关注"""
+        return self.followers.filter_by(follower_id=user.id).first() is not None
+
     def collect(self, photo):
         """收藏图片"""
         if not self.is_collecting(photo):
@@ -176,6 +180,7 @@ tagging = db.Table('tagging',
 @whooshee.register_model('description')
 class Dish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30))
     price = db.Column(db.Integer)
     description = db.Column(db.String(500))
     filename_s = db.Column(db.String(64))
@@ -248,7 +253,7 @@ def delete_avatars(**kwargs):
 def delete_photos(**kwargs):
     """图片删除事件监听函数"""
     target = kwargs['target']
-    for filename in target.filenames.filename, target.filename_s:
-        path = os.path.join(current_app.config['YGQ_UPLOAD_PATH'], filename)
+    for file in target.files:
+        path = os.path.join(current_app.config['YGQ_UPLOAD_PATH'], file.filename)
         if os.path.exists(path):  # not every filename map a unique file
             os.remove(path)

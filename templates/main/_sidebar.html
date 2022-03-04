@@ -13,7 +13,7 @@
             </div>
         </div>
         <a class="card-link" href="{{ url_for('user.index', username=current_user.username) }}">
-            <span class="oi oi-home"></span> My Photos
+            <span class="oi oi-home"></span> My Dishes
         </a><br>
         <a class="card-link" href="{{ url_for('user.show_collections', username=current_user.username) }}">
             <span class="oi oi-star"></span> My Collections
@@ -25,7 +25,7 @@
     <div class="list-group">
         {% for tag in tags %}
             <a class="list-group-item" href="{{ url_for('.show_tag', tag_id=tag.id) }}">{{ tag.name }}
-                <span class="badge badge-pill">{{ tag.photos|length }}</span>
+                <span class="badge badge-pill">{{ tag.dishes|length }}</span>
             </a>
         {% endfor %}
     </div>

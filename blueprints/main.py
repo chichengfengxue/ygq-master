@@ -33,10 +33,10 @@ def explore():
 def search():
     q = request.args.get('q', '').strip()
     if q == '':
-        flash('Enter keyword about photo, user or tag.', 'warning')
+        flash('Enter keyword about dish, user or tag.', 'warning')
         return redirect_back()
 
-    category = request.args.get('category', 'photo')
+    category = request.args.get('category', 'dish')
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['YGQ_SEARCH_RESULT_PER_PAGE']
     if category == 'user':
@@ -83,7 +83,7 @@ def show_dish(dish_id):
     tag_form = TagForm()
 
     description_form.description.data = dish.description
-    return render_template('main/photo.html', dish=dish, comment_form=comment_form,
+    return render_template('main/dish.html', dish=dish, comment_form=comment_form,
                            description_form=description_form, tag_form=tag_form,
                            pagination=pagination, comments=comments)
 
@@ -91,29 +91,28 @@ def show_dish(dish_id):
 @main_bp.route('/collect/<int:dish_id>', methods=['POST'])
 @login_required
 @confirm_required
-@permission_required('COLLECT')
 def collect(dish_id):
     dish = Dish.query.get_or_404(dish_id)
     if current_user.is_collecting(dish):
         flash('Already collected.', 'info')
-        return redirect(url_for('.show_photo', dish_id=dish_id))
+        return redirect(url_for('.show_dish', dish_id=dish_id))
 
     current_user.collect(dish)
     flash('Photo collected.', 'success')
-    return redirect(url_for('.show_photo', dish_id=dish_id))
+    return redirect(url_for('.show_dish', dish_id=dish_id))
 
 
 @main_bp.route('/uncollect/<int:dish_id>', methods=['POST'])
 @login_required
 def uncollect(dish_id):
     dish = Dish.query.get_or_404(dish_id)
-    if current_user.is_collecting(dish):
+    if not current_user.is_collecting(dish):
         flash('Not collect yet.', 'info')
-        return redirect(url_for('.show_photo', dish_id=dish_id))
+        return redirect(url_for('.show_dish', dish_id=dish_id))
 
     current_user.uncollect(dish)
-    flash('Photo uncollected.', 'info')
-    return redirect(url_for('.show_photo', dish_id=dish_id))
+    flash('Dish uncollected.', 'info')
+    return redirect(url_for('.show_dish', dish_id=dish_id))
 
 
 @main_bp.route('/dish/<int:dish_id>/description', methods=['POST'])
@@ -130,7 +129,7 @@ def edit_description(dish_id):
         flash('Description updated.', 'success')
 
     flash_errors(form)
-    return redirect(url_for('.show_photo', dish_id=dish_id))
+    return redirect(url_for('.show_dish', dish_id=dish_id))
 
 
 @main_bp.route('/dish/<int:dish_id>/comment/new', methods=['POST'])
@@ -151,31 +150,7 @@ def new_comment(dish_id):
         flash('Comment published.', 'success')
 
     flash_errors(form)
-    return redirect(url_for('.show_photo', dish_id=dish_id, page=page))
-
-
-@main_bp.route('/dish/<int:dish_id>/tag/new', methods=['POST'])
-@login_required
-def new_tag(dish_id):
-    dish = Dish.query.get_or_404(dish_id)
-    if current_user != dish.shop.user:
-        abort(403)
-
-    form = TagForm()
-    if form.validate_on_submit():
-        for name in form.tag.data.split():
-            tag = Tag.query.filter_by(name=name).first()
-            if tag is None:
-                tag = Tag(name=name)
-                db.session.add(tag)
-                db.session.commit()
-            if tag not in dish.tags:
-                dish.tags.append(tag)
-                db.session.commit()
-        flash('Tag added.', 'success')
-
-    flash_errors(form)
-    return redirect(url_for('.show_photo', dish_id=dish_id))
+    return redirect(url_for('.show_dish', dish_id=dish_id, page=page))
 
 
 @main_bp.route('/reply/comment/<int:comment_id>')
@@ -183,7 +158,7 @@ def new_tag(dish_id):
 def reply_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     return redirect(
-        url_for('.show_photo', photo_id=comment.photo_id, reply=comment_id,
+        url_for('.show_dish', dish_id=comment.dish_id, reply=comment_id,
                 author=comment.author.name) + '#comment-form')
 
 
@@ -208,9 +183,9 @@ def show_tag(tag_id, order):
     per_page = current_app.config['YGQ_DISH_PER_PAGE']
     order_rule = 'time'
     pagination = Dish.query.with_parent(tag).order_by(Dish.timestamp.desc()).paginate(page, per_page)
-    photos = pagination.items
+    dishes = pagination.items
 
     if order == 'by_collects':
-        photos.sort(key=lambda x: len(x.collectors), reverse=True)
+        dishes.sort(key=lambda x: len(x.collectors), reverse=True)
         order_rule = 'collects'
-    return render_template('main/tag.html', tag=tag, pagination=pagination, photos=photos, order_rule=order_rule)
+    return render_template('main/tag.html', tag=tag, pagination=pagination, dishes=dishes, order_rule=order_rule)

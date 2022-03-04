@@ -1,11 +1,31 @@
-{% macro photo_card(photo) %}
+{% macro dish_card(dish) %}
     <div class="photo-card card">
         <a class="card-thumbnail" href="{{ url_for('main.show_dish', dish_id=dish.id) }}">
-            <img class="card-img-top portrait" src="{{ url_for('main.get_image', filename=photo.filename_s) }}">
+            <img class="card-img-top portrait" src="{{ url_for('main.get_image', filename=dish.files[0].filename) }}">
         </a>
         <div class="card-body">
-            <span class="oi oi-star"></span> {{ photo.collectors|length }}
-            <span class="oi oi-comment-square"></span> {{ photo.comments|length }}
+            <div>
+                {{ dish.name }}
+            </div>
+            <span class="oi oi-yen"></span> {{ dish.price }}
+            <span class="oi oi-star"></span> {{ dish.collectors|length }}
+            <span class="oi oi-comment-square"></span> {{ dish.comments|length }}
+            {{ dish.sales }}人付款
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro order_card(order) %}
+    <div class="photo-card card">
+        <a class="card-thumbnail" href="{{ url_for('user.show_order', order_id=order.id) }}">
+            <img class="card-img-top portrait" src="{{ url_for('main.get_image', filename=order.dish.files[0].filename) }}">
+        </a>
+        <div class="card-body">
+            <div>
+                {{ order.dish.name }}
+            </div>
+            <span class="oi oi-yen"></span> {{ order.price }}
+            <span class="oi oi-clock"></span>  {{ order.start_time }}
         </div>
     </div>
 {% endmacro %}

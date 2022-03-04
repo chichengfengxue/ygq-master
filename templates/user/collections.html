@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/pagination.html' import render_pagination %}
-{% from 'macros.html' import photo_card %}
+{% from 'macros.html' import dish_card %}
 
 {% block title %}{{ user.name }}'s collection{% endblock %}
 
@@ -8,10 +8,10 @@
     {% include 'user/_header.html' %}
     <div class="row">
         <div class="col-md-12">
-            {% if user.public_collections or current_user == user %}
+            {% if current_user == user %}
                 {% if collects %}
                     {% for collect in collects %}
-                        {{ photo_card(collect.collected) }}
+                        {{ dish_card(collect.collected) }}
                     {% endfor %}
                 {% else %}
                     <div class="tip">

@@ -13,9 +13,9 @@ class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20),
                                                    Regexp('^[a-zA-Z0-9]*$',
                                                           message='The username should contain only a-z, A-Z and 0-9.')])
-    location_x = IntegerField('x', validators=[DataRequired(), Length(0, 50)])
-    location_y = IntegerField('x', validators=[DataRequired(), Length(0, 50)])
-    tel = IntegerField('tel', validators=[DataRequired(), Length(6, 20)])
+    location_x = IntegerField('x', validators=[DataRequired()])
+    location_y = IntegerField('x', validators=[DataRequired()])
+    tel = StringField('tel', validators=[DataRequired(), Length(6, 20)])
     submit = SubmitField()
 
     def validate_username(self, field):

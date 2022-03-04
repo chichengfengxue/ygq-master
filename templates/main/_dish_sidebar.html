@@ -1,0 +1,125 @@
+{% from 'macros.html' import follow_area with context %}
+
+<div class="card bg-light mb-3 w-100 sidebar-card">
+    <div class="card-body">
+        <div class="row">
+            <a href="{{ url_for('user.index', username=dish.shop.user.username) }}">
+                <img class="sidebar-avatar rounded avatar-m"
+                     src="{{ url_for('main.get_avatar', filename=dish.shop.user.avatar_m) }}">
+            </a>
+            <div class="sidebar-profile">
+                <h6 class="card-title">
+                    <a href="{{ url_for('user.index', username=dish.shop.user.username) }}">{{ dish.shop.user.name }}</a>
+                </h6>
+                <p class="card-subtitle mb-2 text-muted">{{ dish.shop.user.username }}</p>
+                {{ follow_area(dish.shop.user) }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card bg-light mb-3 w-100">
+    <div class="card-body">
+        {% if current_user.is_authenticated %}
+            {% if current_user.is_collecting(dish) %}
+                <form class="inline" method="post"
+                      action="{{ url_for('main.uncollect', dish_id=dish.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">
+                        <span class="oi oi-x"></span> Uncollect
+                    </button>
+                </form>
+            {% else %}
+                <form class="inline" method="post"
+                      action="{{ url_for('main.collect', dish_id=dish.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                        <span class="oi oi-star"></span> Collect
+                    </button>
+                </form>
+            {% endif %}
+        {% else %}
+            <form class="inline" method="post" action="{{ url_for('main.collect', dish_id=dish.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <span class="oi oi-star"></span> Collect
+                </button>
+            </form>
+        {% endif %}
+        {% if dish.collectors %}
+            {{ dish.collectors|length }} collectors
+        {% endif %}
+
+        <div class="card-body">
+            {% if current_user.is_authenticated %}
+                <form class="inline" method="post"
+                      action="{{ url_for('user.buy', dish_id=dish.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                        <span class="oi oi-cart"></span> Buy
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+
+        <div id="description">
+            <p>
+                {% if dish.description %}
+                    {{ dish.description }}
+                {% endif %}
+                {% if current_user == dish.shop.user %}
+                    <a id="description-btn" href="#!">
+                        <small><span class="oi oi-pencil"></span> edit description</small>
+                    </a>
+                {% endif %}
+            </p>
+        </div>
+        {% if current_user == dish.shop.user %}
+            <div id="description-form">
+                <form action="{{ url_for('.edit_description', dish_id=dish.id) }}" method="post">
+                    {{ description_form.csrf_token }}
+                    {{ render_field(description_form.description) }}
+                    <a class="btn btn-light btn-sm" id="cancel-description">Cancel</a>
+                    {{ render_field(description_form.submit, class='btn btn-success btn-sm') }}
+                </form>
+            </div>
+        {% endif %}
+        <div id="tags">
+            <p>
+                {% if dish.tags %}
+                    {% for tag in dish.tags %}
+                        <a class="badge badge-light"
+                           href="{{ url_for('.show_tag', tag_id=tag.id) }}" target="_blank"><span
+                                class="oi oi-tag"></span> {{ tag.name }}</a>
+                    {% endfor %}
+                {% endif %}
+                {% if current_user == dish.shop.user %}
+                    <a id="tag-btn" href="#!">
+                        <small><span class="oi oi-pencil"></span> edit tag</small>
+                    </a>
+                {% endif %}
+            </p>
+        </div>
+        {% if current_user == dish.shop.user %}
+            <div id="tag-form">
+                <form action="{{ url_for('shop.new_tag', dish_id=dish.id) }}" method="post">
+                    {{ tag_form.csrf_token }}
+                    {{ render_field(tag_form.tag) }}
+                    <a class="btn btn-light btn-sm" id="cancel-tag">Cancel</a>
+                    {{ render_field(tag_form.submit, class='btn btn-success btn-sm') }}
+                </form>
+                {% if dish.tags %}
+                    <hr>
+                    {% for tag in dish.tags %}
+                        <a class="dead-link" href="#!"
+                           data-href="{{ url_for('shop.delete_tag', dish_id=dish.id, tag_id=tag.id) }}"
+                           data-toggle="modal" data-target="#confirm-delete" title="Delete tag">
+                            <span class="badge badge-danger">
+                                {{ tag.name }} <span class="oi oi-trash" aria-hidden="true"></span>
+                            </span>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>

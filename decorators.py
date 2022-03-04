@@ -32,6 +32,3 @@ def permission_required(permission_name):
     return decorator
 
 
-def admin_required(func):
-    """检查是否是管理员"""
-    return permission_required('ADMINISTER')(func)

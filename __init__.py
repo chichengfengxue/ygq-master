@@ -67,7 +67,13 @@ def register_shell_context(app):
 
 
 def register_template_context(app):
-    pass
+    @app.context_processor
+    def make_template_context():
+        if current_user.is_authenticated:
+            notification_count = Notification.query.with_parent(current_user).count()
+        else:
+            notification_count = None
+        return dict(notification_count=notification_count)
 
 
 def register_errorhandlers(app):

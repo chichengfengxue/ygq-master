@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/pagination.html' import render_pagination %}
-{% from 'macros.html' import photo_card %}
+{% from 'macros.html' import order_card %}
 
 {% block title %}{{ user.name }}{% endblock %}
 
@@ -8,23 +8,18 @@
     {% include 'user/_header.html' %}
     <div class="row">
         <div class="col-md-12">
-            {% if photos %}
-                {% for photo in photos %}
-                    {{ photo_card(photo) }}
+            {% if orders %}
+                {% for order in orders %}
+                    {{ order_card(order) }}
                 {% endfor %}
             {% else %}
                 <div class="tip text-center">
-                    <h3>No photos.</h3>
-                    {% if user == current_user %}
-                        <a class="btn btn-link" href="{{ url_for('main.upload') }}">Upload</a>
-                    {% else %}
-                        <a class="btn btn-link" href="{{ url_for('main.explore') }}">Explore</a>
-                    {% endif %}
+                    <h3>No orders.</h3>
                 </div>
             {% endif %}
         </div>
     </div>
-    {% if photos %}
+    {% if dishes %}
         <div class="page-footer">
             {{ render_pagination(pagination, align='center') }}
         </div>

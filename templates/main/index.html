@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/pagination.html' import render_pagination %}
-{#{% from 'macros.html' import photo_card with context %}#}
+{% from 'macros.html' import dish_card with context %}
 
 {% block title %}Home{% endblock %}
 
@@ -17,10 +17,10 @@
                         </a>
                         <a class="profile-popover trend-card-avatar"
                            href="{{ url_for('shop.index', shop_id=dish.shop_id) }}">{{ dish.shop.name }}</a>
-{#                        <span class="float-right">#}
-{#            <small data-toggle="tooltip" data-placement="top" data-timestamp="{{ dish.timestamp }}"#}
-{#                   data-delay="500">#}
-{#                {{ moment(dish.timestamp).fromNow(refresh=True) }}</small></span>#}
+                        <span class="float-right">
+            <small data-toggle="tooltip" data-placement="top" data-timestamp="{{ dish.timestamp }}"
+                   data-delay="500">
+                {{ moment(dish.timestamp).fromNow(refresh=True) }}</small></span>
                     </div>
                     <div class="card-body">
                         <div class="" align="center">
@@ -32,11 +32,16 @@
                         </div>
                     </div>
                     <div class="card-footer">
+                        <div>
+                            {{ dish.name }}
+                        </div>
+                        <span class="oi oi-yen"></span> {{ dish.price }}
                         <span class="oi oi-star"></span>
                         <span id="collectors-count-{{ dish.id }}">
                             {{ dish.collectors|length }}
                         </span>
                         <span class="oi oi-comment-square"></span> {{ dish.comments|length }}
+                        {{ dish.sales }}人付款
                         <div class="float-right">
                             {% if current_user.is_authenticated %}
                                 <button class="{% if not current_user.is_collecting(dish) %}hide{% endif %}

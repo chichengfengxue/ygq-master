@@ -8,8 +8,9 @@ from sqlalchemy.exc import IntegrityError
 from datetime import timedelta
 from .extensions import db
 from .models import User, Dish, Tag, Comment, Order, File, Shop, Rider
+from .notifications import push_new_order_notification, push_delivered_notification
 
-fake = Faker()
+fake = Faker("zh_CN")
 
 
 def fake_user(count=100):
@@ -86,6 +87,7 @@ def fake_dish(count=100):
         )
 
         dish = Dish(
+            name=fake.name(),
             description=fake.text(),
             price=random.randint(10, 100),
             timestamp=fake.date_time_this_year(),

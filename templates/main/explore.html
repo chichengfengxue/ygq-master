@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import photo_card with context %}
+{% from 'macros.html' import dish_card with context %}
 
 {% block title %}Explore{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            {% for photo in photos %}
-                {{ photo_card(photo) }}
+            {% for dish in dishes %}
+                {{ dish_card(dish) }}
             {% endfor %}
         </div>
     </div>
