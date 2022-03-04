@@ -1,0 +1,39 @@
+{% from 'macros.html' import follow_area with context %}
+
+<div class="card bg-light mb-3 w-100 sidebar-card">
+    <div class="card-body">
+        <div class="row">
+            <a href="{{ url_for('shop.index', shop_id=order.dish.shop_id) }}">
+                <img class="sidebar-avatar rounded avatar-m"
+                     src="{{ url_for('main.get_avatar', filename=order.dish.shop.user.avatar_m) }}">
+            </a>
+            <div class="sidebar-profile">
+                <h6 class="card-title">
+                    <a href="{{ url_for('shop.index', shop_id=order.dish.shop_id) }}">{{ order.dish.shop.name }}</a>
+                </h6>
+                {{ follow_area(order.dish.shop.user) }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card bg-light mb-3 w-100">
+    <div class="card-body">
+        <div id="description">
+            <p>
+                <a href="{{ url_for('main.show_dish', dish_id=order.dish_id) }}">{{ order.dish.name }}</a>
+            </p>
+            <p>
+                <span class="oi oi-yen"></span> {{ order.price }}
+            </p>
+            <p>
+                数量 {{ order.number }}
+            </p>
+            <p>
+                <span class="oi oi-clock"></span>  {{ order.start_time }}
+            </p>
+            <p>
+                <a href="#">骑手 {{ order.rider.user.name }}</a>
+            </p>
+        </div>
+    </div>
+</div>

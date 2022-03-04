@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+{% from 'bootstrap/form.html' import render_form, render_field %}
+
+{% block title %}{{ order.consumer.name }}'s Order{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="photo">
+                {% for file in order.dish.files %}
+                    <a href="{{ url_for('main.get_image', filename=file.filename) }}" target="_blank">
+                        <img class="img-fluid" src="{{ url_for('main.get_image', filename=file.filename) }}">
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% include 'user/_order_sidebar.html' %}
+        </div>
+    </div>
+{% endblock %}
