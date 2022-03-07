@@ -13,17 +13,17 @@ class TagForm(FlaskForm):
     submit = SubmitField()
 
 
-class Apply2shop(FlaskForm):
+class Apply2Shop(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(1, 30)])
-    location_x = IntegerField('x', validators=[DataRequired(), Length(1, 50)])
-    location_y = IntegerField('y', validators=[DataRequired(), Length(1, 50)])
-    tel = IntegerField('tel', validators=[DataRequired(), Length(6, 20)])
+    location_x = IntegerField('location-x', validators=[DataRequired()])
+    location_y = IntegerField('location-y', validators=[DataRequired()])
+    tel = IntegerField('tel', validators=[DataRequired()])
     submit = SubmitField()
 
 
 class DishForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(1, 30)])
-    price = IntegerField('x', validators=[DataRequired(), Length(1, 50)])
+    price = IntegerField('price', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Optional(), Length(0, 500)])
     tag = StringField('Add Tag (use space to separate)', validators=[Optional(), Length(0, 64)])
     submit = SubmitField()

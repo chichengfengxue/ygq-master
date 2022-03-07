@@ -27,6 +27,13 @@ def fake_user(count=100):
         db.session.add(user)
         try:
             db.session.commit()
+            rider = Rider(
+                location_x=random.randint(0, 1000),
+                location_y=random.randint(0, 1000),
+                user=user,
+            )
+            db.session.add(rider)
+            db.session.commit()
         except IntegrityError:
             db.session.rollback()
 
@@ -61,19 +68,6 @@ def fake_shop(count=20):
     db.session.commit()
 
 
-def fake_rider(count=50):
-    for i in range(count):
-        user = User.query.get(random.randint(1, User.query.count()))
-        rider = Rider(
-            location_x=user.location_x,
-            location_y=user.location_y,
-            user=user,
-            active=True
-        )
-        db.session.add(rider)
-    db.session.commit()
-
-
 def fake_dish(count=100):
     upload_path = current_app.config['YGQ_UPLOAD_PATH']
     for i in range(count):
@@ -83,7 +77,8 @@ def fake_dish(count=100):
         img.save(os.path.join(upload_path, filename))
         file = File(
             filename=filename,
-            is_use=True
+            is_use=True,
+            is_img=True
         )
 
         dish = Dish(
@@ -137,6 +132,7 @@ def fake_order(count=200):
             consumer=User.query.get(random.randint(1, User.query.count())),
             rider=rider,
             price=dish.price*number+fare,
+            fare=fare,
             start_time=start_time,
             time=start_time+timedelta(seconds=fare),
             dish=dish,

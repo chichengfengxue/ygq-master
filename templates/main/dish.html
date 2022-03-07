@@ -10,7 +10,13 @@
             <div class="photo">
                 {% for file in dish.files %}
                 <a href="{{ url_for('.get_image', filename=file.filename) }}" target="_blank">
+                    {% if file.is_img %}
                     <img class="img-fluid" src="{{ url_for('.get_image', filename=file.filename) }}">
+                    {% else %}
+                    <video width="640" height="480" controls>
+                        <source src="{{ url_for('.get_image', filename=file.filename) }}" type="video/mp4">
+                    </video>
+                    {% endif %}
                 </a>
                 {% endfor %}
             </div>

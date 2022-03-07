@@ -1,6 +1,6 @@
 import os
 import uuid
-
+import filetype
 
 try:
     from urlparse import urlparse, urljoin
@@ -16,6 +16,11 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from .extensions import db
 from .models import User
 from .settings import Operations
+
+
+def is_image(filename):
+    kind = filetype.guess(filename)
+    return kind.mime.split('/')[0] == 'image'
 
 
 def generate_token(user, operation, expire_in=None, **kwargs):

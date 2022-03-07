@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+{% from 'macros.html' import dish_card %}
+
+{% block title %}{{ shop.name }}{% endblock %}
+
+{% block content %}
+    {% include 'shop/_header.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if dishes %}
+                {% for dish in dishes %}
+                    {{ dish_card(dish) }}
+                {% endfor %}
+            {% else %}
+                <div class="tip text-center">
+                    <h3>No dishes.</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if dishes %}
+        <div class="page-footer">
+            {{ render_pagination(pagination, align='center') }}
+        </div>
+    {% endif %}
+{% endblock %}

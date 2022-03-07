@@ -44,7 +44,7 @@ def buy(dish_id):
         riders = Rider.query.filter_by(active=True).order_by(func.random()).limit(100)
         distances = [(abs(rider.location_x-user_location_x)+abs(rider.location_y-user_location_y), rider.id) \
                      for rider in riders]
-        distance = distances.min(key=lambda x: x[0])
+        distance = min(distances, key=lambda x: x[0])
         rider = Rider.query.get_or_404(distance[1])
         fare = distance[0] + abs(shop_location_x-user_location_x) + abs(shop_location_y-user_location_y)
         order = Order(

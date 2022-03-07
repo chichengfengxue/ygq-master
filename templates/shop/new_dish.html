@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+{% from 'bootstrap/nav.html' import render_nav_item %}
+
+{% block title %}New Dish{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dropzone.min.css') }}" type="text/css">
+    {{ dropzone.style('margin: 20px 0; border: 2px dashed #0087F7; min-height: 400px;') }}
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>上传图片/视频</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ dropzone.create(action="shop.upload", shop_id=shop.id ) }}
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-9">
+        <div class="card w-100 bg-light">
+            <h3 class="card-header">商品信息</h3>
+            <div class="card-body">
+                {{ render_form(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/dropzone.min.js') }}"></script>
+    {{ dropzone.config() }}
+{% endblock %}
+

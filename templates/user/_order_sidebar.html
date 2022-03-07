@@ -32,7 +32,7 @@
                 <span class="oi oi-clock"></span>  {{ order.start_time }}
             </p>
             <p>
-                <a href="#">骑手 {{ order.rider.user.name }}</a>
+                <a href="{{ url_for('rider.index', rider_id=order.rider.id) }}">骑手 {{ order.rider.user.name }}</a>
             </p>
         </div>
     </div>

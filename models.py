@@ -97,16 +97,14 @@ class User(db.Model, UserMixin):
         """判断用户是否被某个用户关注"""
         return self.followers.filter_by(follower_id=user.id).first() is not None
 
-    def collect(self, photo):
-        """收藏图片"""
-        if not self.is_collecting(photo):
-            collect = Collect(collector=self, collected=photo)
+    def collect(self, dish):
+        if not self.is_collecting(dish):
+            collect = Collect(collector=self, collected=dish)
             db.session.add(collect)
             db.session.commit()
 
-    def uncollect(self, photo):
-        """取消收藏图片"""
-        collect = Collect.query.with_parent(self).filter_by(collected_id=photo.id).first()
+    def uncollect(self, dish):
+        collect = Collect.query.with_parent(self).filter_by(collected_id=dish.id).first()
         if collect:
             db.session.delete(collect)
             db.session.commit()
@@ -147,11 +145,13 @@ class Rider(db.Model):
     income = db.Column(db.Integer, default=0)
     active = db.Column(db.Boolean, default=False)
 
-    def change_active(self):
-        if self.active:
-            self.active = True
-        else:
-            self.active = False
+    def to_active(self):
+        self.active = True
+        db.session.commit()
+
+    def to_inactive(self):
+        self.active = False
+        db.session.commit()
 
 
 class Order(db.Model):
@@ -166,6 +166,7 @@ class Order(db.Model):
     rider = db.relationship('Rider', back_populates='orders')
     price = db.Column(db.Integer)
     number = db.Column(db.Integer)
+    fare = db.Column(db.Integer)
     is_finish = db.Column(db.Boolean, default=False)
     start_time = db.Column(db.DateTime, default=datetime.utcnow)
     time = db.Column(db.DateTime)
@@ -212,6 +213,7 @@ class File(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='files')
     is_use = db.Column(db.Boolean, default=False)
+    is_img = db.Column(db.Boolean, default=True)
 
 
 class Comment(db.Model):

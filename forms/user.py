@@ -13,8 +13,8 @@ class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20),
                                                    Regexp('^[a-zA-Z0-9]*$',
                                                           message='The username should contain only a-z, A-Z and 0-9.')])
-    location_x = IntegerField('x', validators=[DataRequired()])
-    location_y = IntegerField('x', validators=[DataRequired()])
+    location_x = IntegerField('location-x', validators=[DataRequired()])
+    location_y = IntegerField('location-y', validators=[DataRequired()])
     tel = StringField('tel', validators=[DataRequired(), Length(6, 20)])
     submit = SubmitField()
 
@@ -26,6 +26,8 @@ class EditProfileForm(FlaskForm):
 class EditOrder(FlaskForm):
     """订单编辑表单"""
     number = IntegerField('number', validators=[DataRequired()])
+    location_x = IntegerField('location-x', validators=[DataRequired()])
+    location_y = IntegerField('location-y', validators=[DataRequired()])
     submit = SubmitField()
 
     def validate_number(self, field):

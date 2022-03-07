@@ -1,8 +1,10 @@
 {% macro dish_card(dish) %}
     <div class="photo-card card">
+        {% if dish.files %}
         <a class="card-thumbnail" href="{{ url_for('main.show_dish', dish_id=dish.id) }}">
             <img class="card-img-top portrait" src="{{ url_for('main.get_image', filename=dish.files[0].filename) }}">
         </a>
+        {% endif %}
         <div class="card-body">
             <div>
                 {{ dish.name }}

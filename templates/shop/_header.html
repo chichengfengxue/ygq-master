@@ -1,0 +1,43 @@
+{% from 'macros.html' import follow_area with context %}
+{% from 'bootstrap/nav.html' import render_nav_item %}
+
+
+<div class="row">
+    <div class="col-md-3">
+        <img class="img-fluid rounded" src="{{ url_for('main.get_avatar', filename=shop.user.avatar_l) }}">
+    </div>
+    <div class="col-md-9">
+        <h1>{{ shop.name }}</h1>
+        <div>
+            <div class="float-right">
+                {{ follow_area(shop.user) }}
+            </div>
+            <div class="card bg-light mb-3 w-100">
+                <div class="card-body" >
+                    <h5><span class="oi oi-resize-width"></span>  location-x:  {{ shop.location_x }}</h5>
+                </div>
+                <div class="card-body" >
+                    <h5><span class="oi oi-resize-height"></span>  location-y:  {{ shop.location_y }}</h5>
+                </div>
+                <div class="card-body" >
+                    <h5><span class="oi oi-double-quote-serif-left"></span>  tel: {{ shop.tel }}<span class="oi oi-double-quote-serif-right"></span></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="user-nav">
+    <ul class="nav nav-tabs">
+        <div class="container">
+            <p class="float-left">
+                {{ render_nav_item('shop.new_dish', 'dishes', shop.dishes|length, shop_id=shop.id) }}
+            </p>
+            <p class="float-right">
+                <a href="{{ url_for('shop.new_dish', shop_id=shop.id) }}">
+                    <span class="oi oi-plus"> NEW</span>
+                </a>
+            </p>
+        </div>
+    </ul>
+
+</div>

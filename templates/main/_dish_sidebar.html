@@ -51,13 +51,23 @@
 
         <div class="card-body">
             {% if current_user.is_authenticated %}
-                <form class="inline" method="post"
-                      action="{{ url_for('user.buy', dish_id=dish.id) }}">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="btn btn-outline-primary btn-sm">
-                        <span class="oi oi-cart"></span> Buy
-                    </button>
-                </form>
+                {% if current_user == dish.shop.user %}
+                    <form class="inline" method="post"
+                          action="{{ url_for('shop.delete_dish', dish_id=dish.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            <span class="oi oi-trash"></span> Delete
+                        </button>
+                    </form>
+                {% else %}
+                    <form class="inline" method="post"
+                          action="{{ url_for('user.buy', dish_id=dish.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            <span class="oi oi-cart"></span> Buy
+                        </button>
+                    </form>
+                {% endif %}
             {% endif %}
         </div>
 

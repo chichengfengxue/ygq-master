@@ -44,16 +44,15 @@ class BaseConfig:
 
     # 图片上传
     YGQ_UPLOAD_PATH = os.path.join(basedir, 'uploads')
-    YGQ_DISH_SIZE = {'small': 400,
-                         'medium': 800}
+    YGQ_DISH_SIZE = {'small': 400, 'medium': 800}
     YGQ_DISH_SUFFIX = {
         YGQ_DISH_SIZE['small']: '_s',
         YGQ_DISH_SIZE['medium']: '_m',
     }
-    MAX_CONTENT_LENGTH = 3 * 1024 * 1024  # 上传图片最大值
+    MAX_CONTENT_LENGTH = 30 * 1024 * 1024  # 上传最大值
 
-    # DROPZONE_ALLOWED_FILE_TYPE = 'image'  # 设置允许的文件类型
-    DROPZONE_MAX_FILE_SIZE = 3
+    DROPZONE_ALLOWED_FILE_TYPE = 'default'  # 设置允许的文件类型
+    DROPZONE_MAX_FILE_SIZE = 30
     DROPZONE_MAX_FILES = 30
     DROPZONE_ENABLE_CSRF = True
 

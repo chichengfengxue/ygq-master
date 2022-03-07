@@ -5,9 +5,9 @@ from flask_login import login_required, current_user
 
 from ..decorators import confirm_required
 from ..extensions import db
-from ..forms.shop import DishForm, Apply2shop, TagForm
+from ..forms.shop import DishForm, Apply2Shop, TagForm
 from ..models import User, Dish, Shop, File, Tag
-from ..utils import redirect_back, rename_file, flash_errors
+from ..utils import redirect_back, rename_file, flash_errors, is_image
 
 shop_bp = Blueprint('shop', __name__)
 
@@ -17,12 +17,12 @@ def index(shop_id):
     shop = Shop.query.get_or_404(shop_id)
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['YGQ_DISH_PER_PAGE']
-    pagination = Dish.query.with_parent(shop.user).order_by(Dish.timestamp.desc()).paginate(page, per_page)
+    pagination = Dish.query.with_parent(shop).order_by(Dish.timestamp.desc()).paginate(page, per_page)
     dishes = pagination.items
     return render_template('shop/index.html', shop=shop, pagination=pagination, dishes=dishes)
 
 
-@shop_bp.route('/apply/<username>')
+@shop_bp.route('/apply/<username>', methods=['GET', 'POST'])
 @login_required
 @confirm_required
 def apply2shop(username):
@@ -32,7 +32,7 @@ def apply2shop(username):
     if user.shops:
         return redirect(url_for('.index', shop_id=user.shops[0].id))
 
-    form = Apply2shop()
+    form = Apply2Shop()
     if form.validate_on_submit():
         name = form.name.data
         location_x = form.location_x.data
@@ -50,7 +50,7 @@ def apply2shop(username):
         flash('Shop published.', 'success')
         return redirect(url_for('.index', shop_id=shop.id))
 
-    return render_template('shop/apply_shop.html')
+    return render_template('shop/apply_shop.html', form=form)
 
 
 @shop_bp.route('/delete/dish/<int:dish_id>', methods=['POST'])
@@ -65,7 +65,7 @@ def delete_dish(dish_id):
     return redirect_back()
 
 
-@shop_bp.route('/upload/<int:shop_id>')
+@shop_bp.route('/upload/<int:shop_id>', methods=['GET', 'POST'])
 @login_required
 @confirm_required
 def upload(shop_id):
@@ -76,26 +76,26 @@ def upload(shop_id):
         f.save(os.path.join(current_app.config['YGQ_UPLOAD_PATH'], filename))
         file = File(
             filename=filename,
-            user=shop.user
+            user=shop.user,
+            is_img=is_image(os.path.join(current_app.config['YGQ_UPLOAD_PATH'], filename))
         )
         db.session.add(file)
         db.session.commit()
     return redirect_back()
 
 
-@shop_bp.route('/shop/<int:shop_id>/dish/new')
+@shop_bp.route('/shop/<int:shop_id>/dish/new', methods=['GET', 'POST'])
 @login_required
 def new_dish(shop_id):
     shop = Shop.query.get_or_404(shop_id)
     form = DishForm()
 
     if form.validate_on_submit():
-        price = form.price.data
-        description = form.description.data
         dish = Dish(
-            price=price,
-            description=description,
-            shop=shop
+            price=form.price.data,
+            description=form.description.data,
+            shop=shop,
+            name=form.name.data
         )
         db.session.add(dish)
         db.session.commit()
@@ -109,12 +109,15 @@ def new_dish(shop_id):
                 dish.tags.append(tag)
                 db.session.commit()
 
-        dish.filenames = File.query.filter_by(is_use=False)
+        files = File.query.filter_by(is_use=False)
+        for file in files:
+            file.dish = dish
+            file.is_use = True
         db.session.commit()
         flash('Dish published.', 'success')
         return redirect(url_for('main.show_dish', dish_id=dish.id))
 
-    return render_template('shop/new_dish.html')
+    return render_template('shop/new_dish.html', form=form, shop=shop)
 
 
 @shop_bp.route('/dish/<int:dish_id>/tag/new', methods=['POST'])

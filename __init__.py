@@ -130,13 +130,12 @@ def register_commands(app):
     @click.option('--collect', default=50, help='Quantity of collects, default is 50.')
     @click.option('--comment', default=100, help='Quantity of comments, default is 100.')
     @click.option('--dish', default=100, help='Quantity of dishes, default is 100.')
-    @click.option('--rider', default=50, help='Quantity of riders, default is 50.')
     @click.option('--order', default=100, help='Quantity of orders, default is 200.')
     @click.option('--shop', default=20, help='Quantity of shops, default is 20.')
-    def forge(user, follow, tag, collect, comment, dish, rider, order, shop):
+    def forge(user, follow, tag, collect, comment, dish, order, shop):
         """Generate fake data."""
 
-        from .fakes import fake_shop, fake_comment, fake_follow, fake_rider, fake_tag, fake_user, \
+        from .fakes import fake_shop, fake_comment, fake_follow, fake_tag, fake_user, \
             fake_collect, fake_dish,fake_order
 
         db.drop_all()
@@ -156,8 +155,6 @@ def register_commands(app):
         fake_collect(collect)
         click.echo('Generating %d comments...' % comment)
         fake_comment(comment)
-        click.echo('Generating %d riders...' % rider)
-        fake_rider(rider)
         click.echo('Generating %d orders...' % order)
         fake_order(order)
         click.echo('Done.')
