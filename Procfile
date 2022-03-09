@@ -1,1 +1,1 @@
-web: gunicorn ygq.__init__ --log-file -
+web: gunicorn __init__ --log-file -
