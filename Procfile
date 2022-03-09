@@ -1,1 +1,1 @@
-web: gunicorn ygq-master.wsgi --log-file -
+web: gunicorn ygq.__init__ --log-file -
