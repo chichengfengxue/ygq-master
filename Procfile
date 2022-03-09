@@ -1,1 +1,1 @@
-web: gunicorn ygq.wsgi --log-file -
+web: gunicorn ygq-master.wsgi --log-file -
