@@ -3,7 +3,7 @@ Bootstrap-Flask==1.2.0
 click==7.1.1
 Faker==4.0.2
 filetype==1.0.10
-Flask==1.1.2
+Flask==2.0.3
 Flask-APScheduler==1.12.3
 Flask-Avatars==0.2.2
 Flask-Bootstrap==3.3.7.1
