@@ -7,6 +7,7 @@ try:
 except ImportError:
     from urllib.parse import urlparse, urljoin
 
+
 import PIL
 from PIL import Image
 from flask import current_app, request, url_for, redirect, flash
