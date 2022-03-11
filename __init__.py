@@ -7,11 +7,11 @@ from flask_wtf.csrf import CSRFError
 
 # from .blueprints.admin import admin_bp
 # from .blueprints.ajax import ajax_bp
-from .blueprints.auth import auth_bp
-from .blueprints.main import main_bp
-from .blueprints.rider import rider_bp
-from .blueprints.shop import shop_bp
-from .blueprints.user import user_bp
+from blueprints.auth import auth_bp
+from blueprints.main import main_bp
+from blueprints.rider import rider_bp
+from blueprints.shop import shop_bp
+from blueprints.user import user_bp
 from .extensions import bootstrap, db, login_manager, mail, dropzone, moment, whooshee, avatars, csrf
 # from .extensions import scheduler
 from .models import User, Dish, Tag, Follow, Notification, Comment, Collect, Order, Rider, Shop, File
